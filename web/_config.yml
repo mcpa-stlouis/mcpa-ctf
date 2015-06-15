@@ -1,0 +1,11 @@
+# Site settings
+title: MCPA STL CTF 2015
+
+destination: /srv/http/ctf
+exclude: ['coffee', 'node_modules']
+
+mode: development
+
+# Build settings
+markdown: kramdown
+permalink: none
