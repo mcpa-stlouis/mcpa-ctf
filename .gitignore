@@ -20,3 +20,4 @@ api/graders/*
 *~
 example_problems
 .lesshst
+.gitconfig
