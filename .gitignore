@@ -18,3 +18,5 @@ web/_includes/analytics.html
 api/graders/autogentest/instances/*
 api/graders/*
 *~
+example_problems
+.lesshst

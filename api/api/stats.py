@@ -21,7 +21,12 @@ def get_score(tid=None, uid=None):
     Returns:
         The users's or team's score
     """
-    score = sum([problem['score'] for problem in api.problem.get_solved_problems(tid=tid, uid=uid)])
+    solved_problems = api.problem.get_solved_problems(tid=tid, uid=uid)
+    score = sum([problem['score'] for problem in solved_problems])
+
+    for hint_request in api.problem.get_hint_requests(tid=tid) :
+        if (hint_request["pid"]) in [solved_problem["pid"] for solved_problem in solved_problems] :
+            score -= hint_request["points_deducted"]
     return score
 
 
@@ -195,6 +200,11 @@ def get_score_progression(tid=None, uid=None, category=None):
     for submission in sorted(correct_submissions, key=lambda sub: sub["timestamp"]):
         if submission['pid'] not in problems_counted:
             score += api.problem.get_problem(pid=submission["pid"])["score"]
+            
+            for hint_request in api.problem.get_hint_requests(tid=tid) :
+                if hint_request['pid'] == submission['pid'] :
+                    score -= hint_request["points_deducted"]
+
             problems_counted.add(submission['pid'])
         result.append({
             "score": score,

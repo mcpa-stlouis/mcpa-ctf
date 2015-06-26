@@ -24,6 +24,13 @@ submission_schema = Schema({
         ("This does not look like a valid key.", [str, Length(max=100)]))
 })
 
+hint_request_schema = Schema({
+    Required("tid"): check(
+        ("This does not look like a valid tid.", [str, Length(max=100)])),
+    Required("pid"): check(
+        ("This does not look like a valid pid.", [str, Length(max=100)]))
+})
+
 problem_schema = Schema({
     Required("name"): check(
         ("The problem's display name must be a string.", [str])),
@@ -370,6 +377,79 @@ def submit_key(tid, pid, key, uid=None, ip=None):
 
     return result
 
+@log_action
+def request_hint(tid, pid, uid=None, ip=None):
+    """
+    User hint request. Problem hint requests are inserted into the database.
+
+    Args:
+        tid: user's team id
+        pid: problem's pid
+        uid: user's uid
+    Returns:
+        A dict.
+        points: number of points deducted
+        hint: message returned from the grader.
+    """
+
+    db = api.common.get_conn()
+    validate(hint_request_schema, {"tid": tid, "pid": pid})
+
+    if pid not in get_unlocked_pids(tid):
+        raise InternalException("You can't request hints to problems you haven't unlocked.")
+
+    if pid in get_solved_pids(tid=tid):
+        exp = WebException("You have already solved this problem.")
+        exp.data = {'code': 'solved'}
+        raise exp
+
+    user = api.user.get_user(uid=uid)
+    if user is None:
+        raise InternalException("User submitting flag does not exist.")
+
+    uid = user["uid"]
+
+    problem = get_problem(pid=pid)
+
+    grader = get_grader(pid)
+    hints = grader.get_hints()
+
+    if not hints :
+        exp = WebException("No hints available for this problem... good luck!")
+        exp.data = {'code': 'repeat'}
+        raise exp
+
+    hint_requests = get_hint_requests(pid=pid, tid=tid)
+
+    eligibility = api.team.get_team(tid=tid)['eligible']
+
+    if len(hint_requests) >= len(hints) :
+        exp = WebException("You've already requested all available hints.")
+        exp.data = {'code': 'repeat'}
+        raise exp
+
+    new_hint_points = hints[len(hint_requests)][0]
+    new_hint = hints[len(hint_requests)][1]
+
+    hint_request = {
+        'uid': uid,
+        'tid': tid,
+        'timestamp': datetime.utcnow(),
+        'hint': new_hint,
+        'points_deducted': new_hint_points,
+        'ip': ip,
+        'eligible': eligibility,
+        'pid': pid,
+        'category': problem['category']
+    }
+
+    db.hint_requests.insert(hint_request)
+
+    return {
+        "points": new_hint_points,
+        "hint": new_hint
+    }
+
 
 def count_submissions(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
     db = api.common.get_conn()
@@ -432,6 +512,45 @@ def get_submissions(pid=None, uid=None, tid=None, category=None, correctness=Non
         match.update({"eligible": eligibility})
 
     return list(db.submissions.find(match, {"_id":0}))
+
+def get_hint_requests(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
+    """
+    Gets the hint requests from a team 
+    Optional filters of pid or category.
+
+    Args:
+        uid: the user id
+        tid: the team id
+
+        category: category filter.
+        pid: problem filter.
+        correctness: correct filter
+    Returns:
+        A list of hint_requests from the given entity.
+    """
+
+    db = api.common.get_conn()
+
+    match = {}
+
+    if uid is not None:
+        match.update({"uid": uid})
+    elif tid is not None:
+        match.update({"tid": tid})
+
+    if pid is not None:
+        match.update({"pid": pid})
+
+    if category is not None:
+        match.update({"category": category})
+
+    if correctness is not None:
+        match.update({"correct": correctness})
+
+    if eligibility is not None:
+        match.update({"eligible": eligibility})
+
+    return list(db.hint_requests.find(match, {"_id":0}))
 
 def clear_all_submissions():
     """
