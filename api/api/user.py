@@ -37,6 +37,9 @@ user_schema = Schema({
     ),
     Required('background'):
         check(("You must provide your background!", [str, Length(min=3, max=20)])
+    ),
+    Required('paypal'):
+        check(("You must provide your unique Paypal transaction number or the MCPA Member Coupon Code", [str, Length(min=17, max=17)])
     )
 }, extra=True)
 
@@ -140,7 +143,7 @@ def get_user(name=None, uid=None):
     return user
 
 def create_user(username, firstname, lastname, email, password_hash, tid, teacher=False,
-                background="undefined", country="undefined", receive_ctf_emails=False):
+                background="undefined", country="undefined", receive_ctf_emails=False, paypal='undefined'):
     """
     This inserts a user directly into the database. It assumes all data is valid.
 
@@ -182,7 +185,8 @@ def create_user(username, firstname, lastname, email, password_hash, tid, teache
         'disabled': False,
         'background': background,
         'country': country,
-        'receive_ctf_emails': receive_ctf_emails
+        'receive_ctf_emails': receive_ctf_emails,
+        'paypal': paypal
     }
 
     db.users.insert(user)
@@ -284,7 +288,8 @@ def create_user_request(params):
             teacher=True,
             background=params["background"],
             country=params["country"],
-            receive_ctf_emails=params["ctf-emails"]
+            receive_ctf_emails=params["ctf-emails"],
+            paypal=params["paypal"]
         )
 
     elif params.get("create-new-team", "false") == "true":
@@ -328,7 +333,8 @@ def create_user_request(params):
         team["tid"],
         background=params["background"],
         country=params["country"],
-        receive_ctf_emails=params["ctf-emails"]
+        receive_ctf_emails=params["ctf-emails"],
+        paypal=params["paypal"]
     )
 
     if uid is None:
