@@ -25,3 +25,4 @@ example_problems/
 *.pyc
 */*.pyc
 */*/*.pyc
+.python_history
