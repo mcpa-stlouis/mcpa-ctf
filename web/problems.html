@@ -69,7 +69,9 @@ startup_functions:
                     </div>
                     <div class="tab-pane" id="<%= pill.hintId %>">
                         <div class="panel-body">
-                            <%= problem.hint %>
+                            <b>Free Hint:</b> <%= problem.hint %><br />
+			    <div data-pid="<%= problem.pid %>" id="<%= problem.pid %>_hints"></div><br />
+  			    <div data-pid="<%= problem.pid %>" id="<%= problem.pid %>_req_hint" class="req_hint_button btn btn-default">Request Additional Hint</div><br />
                         </div>
                     </div>
                     <div class="tab-pane <%= pill.reviewClassName %>" id="<%= pill.reviewId %>">

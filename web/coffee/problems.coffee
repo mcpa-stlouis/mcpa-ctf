@@ -78,11 +78,33 @@ addProblemReview = (e) ->
         new_achievements = (x for x in data.data when !x.seen)
         constructAchievementCallbackChain new_achievements
 
+build_hint_list = (pid) ->
+  apiCall "GET", "/api/problems/get_hints", {"pid": pid}
+  .done (data) ->
+    $('#' + pid + '_hints').empty()
+    list_of_hints = JSON.parse(data["data"])
+    hints = []
+    hints.push "<ul>"
+    i = 0
+    while i < list_of_hints.length
+      hints.push "<li>" + list_of_hints[i].hint + " (-" + list_of_hints[i].points_deducted + ")</li>"
+      i++
+    hints.push "</ul>"
+    $.each hints, ->
+      $('#' + pid + '_hints').append this
+
 toggleHint = (e) ->
   pid = $(e.target).data("pid")
   ga('send', 'event', 'Problem', 'OpenHint', 'Basic')
   apiCall "GET", "/api/problems/hint", {"pid": pid, "source": "basic"}
-  #$("#"+pid+"-hint").toggle("fast")
+  build_hint_list pid
+
+requestHint = (e) ->
+  pid = $(e.target).data("pid")
+  ga('send', 'event', 'Problem', 'HintReq', 'Basic')
+  apiCall "GET", "/api/problems/req_hint", {"pid": pid, "source": "basic"}
+  .done ->
+    build_hint_list pid
 
 loadProblems = ->
   apiCall "GET", "/api/problems"
@@ -124,6 +146,7 @@ loadProblems = ->
           $(".problem-hint").hide()
           $(".problem-submit").on "submit", submitProblem
           $(".info-span").on "click", toggleHint
+          $(".req_hint_button").on "click", requestHint
           $(".hint-tab-button").on "click", toggleHint
 
           $(".problem-review-form").on "submit", addProblemReview

@@ -99,3 +99,55 @@ def request_problem_hint_hook():
 
     hint(pid, source)
     return WebSuccess("Hint noted.")
+
+@blueprint.route("/req_hint", methods=['GET'])
+@api_wrapper
+@require_login
+@block_before_competition(WebError("The competition has not begun yet!"))
+def request_new_problem_hint_hook():
+
+    @log_action
+    def hint(pid, source):
+        return None
+
+    source = request.args.get("source")
+    pid = request.args.get("pid")
+
+    if pid is None:
+        return WebError("Please supply a pid.")
+    if source is None:
+        return WebError("You have to supply the source of the hint.")
+
+    tid = api.user.get_team()["tid"]
+    if pid not in api.problem.get_unlocked_pids(tid):
+        return WebError("Your team hasn't unlocked this problem yet!")
+
+    hint(pid, source)
+    return WebSuccess(data=api.problem.request_hint(pid=pid,tid=tid))
+
+@blueprint.route("/get_hints", methods=['GET'])
+@api_wrapper
+@require_login
+@block_before_competition(WebError("The competition has not begun yet!"))
+def request_existing_problem_hints_hook():
+
+    @log_action
+    def hint(pid):
+        return None
+
+    pid = request.args.get("pid")
+
+    if pid is None:
+        return WebError("Please supply a pid.")
+
+    tid = api.user.get_team()["tid"]
+    if tid is None :
+        return WebError("tid is invalid")
+
+    if pid not in api.problem.get_unlocked_pids(tid):
+        return WebError("Your team hasn't unlocked this problem yet!")
+    
+    hint(pid)
+
+    hint_data = api.problem.get_hint_requests_web(pid, tid=api.user.get_user()['tid'])
+    return WebSuccess(data=hint_data)

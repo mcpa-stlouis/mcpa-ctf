@@ -445,10 +445,9 @@ def request_hint(tid, pid, uid=None, ip=None):
 
     db.hint_requests.insert(hint_request)
 
-    return {
-        "points": new_hint_points,
-        "hint": new_hint
-    }
+    ret = WebSuccess(new_hint)
+    ret.data = {'points': new_hint_points, 'hint': new_hint }
+    return ret
 
 
 def count_submissions(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
@@ -551,6 +550,10 @@ def get_hint_requests(pid=None, uid=None, tid=None, category=None, correctness=N
         match.update({"eligible": eligibility})
 
     return list(db.hint_requests.find(match, {"_id":0}))
+
+def get_hint_requests_web(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
+    hints = get_hint_requests(pid, uid, tid, category, correctness, eligibility);
+    return json_util.dumps(hints)
 
 def clear_all_submissions():
     """

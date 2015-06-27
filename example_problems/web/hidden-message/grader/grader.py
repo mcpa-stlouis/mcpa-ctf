@@ -9,3 +9,6 @@ def grade(autogen, key):
         return True, "Correct!"
     else:
         return False, "Try Again."
+
+def get_hints():
+  return  [("10", "Think colors"), ("10", "Sometimes things can be the same color")]
