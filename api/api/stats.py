@@ -24,10 +24,10 @@ def get_score(tid=None, uid=None):
     solved_problems = api.problem.get_solved_problems(tid=tid, uid=uid)
     score = sum([problem['score'] for problem in solved_problems])
 
-    for hint_request in api.problem.get_hint_requests(tid=tid) :
-        if (hint_request["pid"]) in [solved_problem["pid"] for solved_problem in solved_problems] :
-            score -= hint_request["points_deducted"]
-    return score
+    hints_requested = api.problem.get_hint_requests_dict(tid=tid, uid=uid)
+    deduct = sum([int(hint['points_deducted']) for hint in hints_requested])
+
+    return score - deduct
 
 
 def get_team_review_count(tid=None, uid=None):
@@ -98,14 +98,13 @@ def get_all_team_scores():
         else:
             lastsubmit = datetime.datetime.now()
         score = get_score(tid=team['tid'])
-        if score > 0:
-            result.append({
-                "name": team['team_name'],
-                "tid": team['tid'],
-                "school": team["school"],
-                "score": score,
-                "lastsubmit": lastsubmit
-            })
+        result.append({
+            "name": team['team_name'],
+            "tid": team['tid'],
+            "school": team["school"],
+            "score": score,
+            "lastsubmit": lastsubmit
+        })
     time_ordered = sorted(result, key=lambda entry: entry['lastsubmit'])
     time_ordered_time_removed = [{'name': x['name'], 'tid': x['tid'], 'school': x['school'], 'score': x['score']} for x in time_ordered]
     return sorted(time_ordered_time_removed, key=lambda entry: entry['score'], reverse=True)
@@ -203,7 +202,7 @@ def get_score_progression(tid=None, uid=None, category=None):
             
             for hint_request in api.problem.get_hint_requests(tid=tid) :
                 if hint_request['pid'] == submission['pid'] :
-                    score -= hint_request["points_deducted"]
+                    score -= int(hint_request["points_deducted"])
 
             problems_counted.add(submission['pid'])
         result.append({
