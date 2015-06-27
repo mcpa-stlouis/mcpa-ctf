@@ -21,3 +21,6 @@ api/graders/*
 example_problems
 .lesshst
 .gitconfig
+.*.swp
+*/.*.swp
+*/*/.*.swp
