@@ -512,7 +512,7 @@ def get_submissions(pid=None, uid=None, tid=None, category=None, correctness=Non
 
     return list(db.submissions.find(match, {"_id":0}))
 
-def get_hint_requests_dict(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
+def get_hint_requests(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
     """
     Gets the hint requests from a team 
     Optional filters of pid or category.
@@ -548,16 +548,11 @@ def get_hint_requests_dict(pid=None, uid=None, tid=None, category=None, correctn
     if eligibility is not None:
         match.update({"eligible": eligibility})
 
-    return db.hint_requests.find(match, {"_id":0})
-
-def get_hint_requests(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
-    hints = get_hint_requests_dict(pid, uid, tid, category, correctness, eligibility);
-    return list(hints)
+    return list(db.hint_requests.find(match, {"_id":0}))
 
 def get_hint_requests_web(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
     hints = get_hint_requests(pid, uid, tid, category, correctness, eligibility);
     return json_util.dumps(hints)
-
 
 def clear_all_submissions():
     """
