@@ -7,7 +7,6 @@
 .profile
 .vim/
 .viminfo
-*.pyc
 *.project
 .idea
 .vagrant
@@ -24,3 +23,6 @@ example_problems
 .*.swp
 */.*.swp
 */*/.*.swp
+*.pyc
+*/*.pyc
+*/*/*.pyc
