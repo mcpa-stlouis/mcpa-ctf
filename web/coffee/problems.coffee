@@ -106,6 +106,13 @@ requestHint = (e) ->
   .done (data) ->
     if data.message
       apiNotify(data)
+
+    apiCall "GET", "/api/team/score", {}
+    .done (data) ->
+      if data.data
+        $("#title").children("#team-score").remove()
+        $("#title").append("<span id='team-score' class='pull-right'>Score: " + data.data.score + "</span>")
+    
     build_hint_list pid
 
 loadProblems = ->
