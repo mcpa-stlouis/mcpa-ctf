@@ -40,7 +40,7 @@ testing_mongo_port = 27017
 
 """ CTF SETTINGS """
 
-enable_teachers = True
+enable_teachers = False
 enable_feedback = True
 
 competition_name = "picoCTF"
