@@ -40,6 +40,7 @@ def get_team_review_count(tid=None, uid=None):
         return count
 
 
+@api.cache.memoize()
 def get_group_scores(gid=None, name=None):
     """
     Get the group scores.
@@ -110,6 +111,7 @@ def get_all_team_scores():
     return sorted(time_ordered_time_removed, key=lambda entry: entry['score'], reverse=True)
 
 
+@api.cache.memoize()
 def get_all_user_scores():
     """
     Gets the score for every user in the database.
@@ -209,6 +211,7 @@ def get_score_progression(tid=None, uid=None, category=None):
 
     return result
 
+@api.cache.memoize()
 def get_top_teams():
     """
     Finds the top teams
