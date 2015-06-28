@@ -373,6 +373,7 @@ def submit_key(tid, pid, key, uid=None, ip=None):
 
         api.cache.invalidate_memoization(api.stats.get_score_progression, {"kwargs.tid":tid}, {"kwargs.uid":uid})
         api.cache.invalidate_memoization(api.stats.get_top_teams_score_progressions, {"kwargs.tid":tid}, {"kwargs.uid":uid})
+        api.cache.invalidate_memoization(api.stats.get_all_team_scores, {"":""})
 
         api.achievement.process_achievements("submit", {"uid": uid, "tid": tid, "pid": pid})
 
@@ -452,6 +453,7 @@ def request_hint(tid, pid, uid=None, ip=None):
 
     api.cache.invalidate_memoization(api.stats.get_score_progression, {"kwargs.tid":tid}, {"kwargs.uid":uid})
     api.cache.invalidate_memoization(api.stats.get_top_teams_score_progressions, {"kwargs.tid":tid}, {"kwargs.uid":uid})
+    api.cache.invalidate_memoization(api.stats.get_all_team_scores, {"":""})
 
     ret = WebSuccess(new_hint)
     ret.data = {'points': new_hint_points, 'hint': new_hint }
@@ -559,7 +561,7 @@ def get_hint_requests(pid=None, uid=None, tid=None, category=None, correctness=N
     return list(db.hint_requests.find(match, {"_id":0}))
 
 def get_hint_requests_web(pid=None, uid=None, tid=None, category=None, correctness=None, eligibility=None):
-    hints = get_hint_requests(pid, uid, tid, category, correctness, eligibility);
+    hints = get_hint_requests(pid, uid, tid, category, correctness, eligibility)
     return json_util.dumps(hints)
 
 def clear_all_submissions():
