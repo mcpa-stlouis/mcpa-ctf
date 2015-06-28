@@ -372,6 +372,7 @@ def submit_key(tid, pid, key, uid=None, ip=None):
         api.cache.invalidate_memoization(get_solved_pids, {"kwargs.tid":tid}, {"kwargs.uid":uid})
 
         api.cache.invalidate_memoization(api.stats.get_score_progression, {"kwargs.tid":tid}, {"kwargs.uid":uid})
+        api.cache.invalidate_memoization(api.stats.get_top_teams_score_progressions, {"kwargs.tid":tid}, {"kwargs.uid":uid})
 
         api.achievement.process_achievements("submit", {"uid": uid, "tid": tid, "pid": pid})
 
