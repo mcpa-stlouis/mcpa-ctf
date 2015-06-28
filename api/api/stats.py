@@ -190,20 +190,18 @@ def get_score_progression(tid=None, uid=None, category=None):
     """
 
     correct_submissions = api.problem.get_submissions(uid=uid, tid=tid, category=category, correctness=True)
+    hint_requests = api.problem.get_hint_requests(tid=tid)
+    combined_submissions = correct_submissions + hint_requests
 
     result = []
     score = 0
 
-    problems_counted = set()
-
-    for submission in sorted(correct_submissions, key=lambda sub: sub["timestamp"]):
-        if submission['pid'] not in problems_counted:
+    for submission in sorted(combined_submissions, key=lambda sub: sub["timestamp"]):
+        if 'points_deducted' in submission:
+            score -= int(submission['points_deducted'])
+        else:
             score += api.problem.get_problem(pid=submission["pid"])["score"]
             
-            for hint_request in api.problem.get_hint_requests(pid=submission["pid"],tid=tid) :
-                score -= int(hint_request["points_deducted"])
-
-            problems_counted.add(submission['pid'])
         result.append({
             "score": score,
             "time": int(submission["timestamp"].timestamp())
