@@ -36,3 +36,8 @@ echo "Clearing the API cache"
 echo "Starting the picoCTF API"
 tmux kill-session -t picoapi 2> /dev/null
 tmux new-session -s picoapi -d "cd /home/mcpa/api && python3 run.py"
+
+# Start cache_daemon
+echo "Starting the picoCTF cache daemon"
+cd /home/mcpa/api && python3 daemon_manager.py -d daemons/ cache_stats -i 15
+
