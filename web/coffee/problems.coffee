@@ -103,7 +103,9 @@ requestHint = (e) ->
   pid = $(e.target).data("pid")
   ga('send', 'event', 'Problem', 'HintReq', 'Basic')
   apiCall "GET", "/api/problems/req_hint", {"pid": pid, "source": "basic"}
-  .done ->
+  .done (data) ->
+    if data.message
+      apiNotify(data)
     build_hint_list pid
 
 loadProblems = ->

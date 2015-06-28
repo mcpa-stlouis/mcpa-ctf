@@ -123,7 +123,9 @@ def request_new_problem_hint_hook():
         return WebError("Your team hasn't unlocked this problem yet!")
 
     hint(pid, source)
-    return WebSuccess(data=api.problem.request_hint(pid=pid,tid=tid))
+    ret = WebSuccess("New hint unlocked!")
+    ret.data = api.problem.request_hint(pid=pid,tid=tid)
+    return ret
 
 @blueprint.route("/get_hints", methods=['GET'])
 @api_wrapper
@@ -150,4 +152,4 @@ def request_existing_problem_hints_hook():
     hint(pid)
 
     hint_data = api.problem.get_hint_requests_web(pid, tid=api.user.get_user()['tid'])
-    return WebSuccess(data=hint_data)
+    return WebSuccess(message="Hints recieved",data=hint_data)
