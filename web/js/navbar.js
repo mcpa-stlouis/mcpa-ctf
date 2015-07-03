@@ -4,7 +4,8 @@
 
   apiOffline = {
     About: "/about",
-    News: "/news"
+    News: "/news",
+    Sponsorship: "/sponsorship"
   };
 
   teacherLoggedIn = {
@@ -16,11 +17,15 @@
       About: "/about",
       News: "/news"
     },
+    Sponsorship: "/sponsorship"
+  };
+
+  ({
     Account: {
       Manage: "/account",
       Logout: "#"
     }
-  };
+  });
 
   teacherLoggedInNoCompetition = {
     Classroom: "/classroom",
@@ -56,15 +61,20 @@
       About: "/about",
       News: "/news"
     },
+    Sponsorship: "/sponsorship"
+  };
+
+  ({
     Account: {
       Manage: "/account",
       Logout: "#"
     }
-  };
+  });
 
   userNotLoggedIn = {
     About: "/about",
     News: "/news",
+    Sponsorship: "/sponsorship",
     Scoreboard: "/scoreboard",
     Login: "/login"
   };
