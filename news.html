@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" style="100%">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MCPA STL CTF 2015 - News</title>
+    
+
+    
+        <script language="javascript">var ga = function (a,b,c,d) {}</script>
+    
+
+    <script src="/js/jquery.min.js"></script>
+    <script src='/js/api.js'></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <link href="/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/jsapi"></script>
+
+    <link rel="icon" type="image/png" href="/img/mcpa-ico.png">
+
+    <script src="/js/underscore-min.js"></script>
+    <script src="/js/jquery.cookie.min.js"></script>
+    <script src="/js/libs/notify.min.js"></script>
+    <script src="/js/dependencies.js"></script>
+    <script src="/js/navbar.js"></script>
+
+    
+</head>
+
+
+<body>
+
+    <script type="text/template" id="modal-template">
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><%- title %></h4>
+          </div>
+          <div class="modal-body">
+              <%= message %>
+          </div>
+          <div class="modal-footer">
+            <% if (submitButton != "") { %>
+                <button type="button" class="btn btn-primary" id="modal-submit-button"><%- submitButton %></button>
+            <% } %>
+            <% if (yesButton != "") { %>
+                <button type="button" data-dismiss="modal" class="btn btn-primary" id="modal-yes-button"><%- yesButton %></button>
+            <% } %>
+            <% if (noButton != "") { %>
+                <button type="button" data-dismiss="modal" class="btn" id="modal-no-button"><%- noButton %></button>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+</script>
+<div id="modal-holder"></div>
+
+    <div class="boxed">
+        <nav class="navbar navbar-inverse navbar-static-top no-margin" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+                <a class="navbar-brand dropdown-toggle" href="/">
+                <div style="display:inline;position:absolute;top:0;">
+		<img src="/img/mcpa.png" height="42">&nbspMCPA STL CTF 2015
+                </div>
+                </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right" id="navbar-links">
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script type="text/template" id="navbar-links-template">
+    <% _.each(links, function(link, name) { %>
+        <% if(typeof link == "object") {  %>
+            <%= renderNestedNavbarLinks({
+            menu_name: name,
+            links: link,
+            renderNavbarLinks: renderNavbarLinks,
+            renderNestedNavbarLinks: renderNestedNavbarLinks
+            }) %>
+        <% } else { %>
+            <li><a href="<%= link %>" id="navbar-item-<%= name.split(' ').join('_').toLowerCase() %>"><%- name %></a></li>
+        <% }; %>
+    <% }); %>
+</script>
+
+<script type="text/template" id="navbar-links-dropdown-template">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%- menu_name %> <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <%= renderNavbarLinks({
+            links: links,
+            topLevel: false,
+            renderNavbarLinks: renderNavbarLinks,
+            renderNestedNavbarLinks: renderNestedNavbarLinks
+            }) %>
+        </ul>
+    </li>
+</script>
+
+
+		
+		<header class="page-title">
+			<div class="container">
+				<h1 id="title">News</h1>
+			</div>
+		</header>
+		
+
+        <div id="main-content">
+        <div class="container">    
+                   
+            <h2>
+                We found a home!
+            </h2>
+            <div class="container row">
+<p class="text-center">We're proud to announce that the event now has a home at the CIC @ 4240 Duncan Ave. St Louis, MO 63108!</p>
+<div class="col-sm-12"><div class="text-center"><a href="http://stl.cic.us/"><img src="/img/sponsors/cic.jpg" height="90px" /></a></div>
+</div>
+
+<div class="col-md-12 text-center">
+<br /><img class="img-responsive" src="/img/cic-1.jpg" width="600px" /><br />
+<br /><img class="img-responsive" src="/img/cic-2.jpg" width="600px" /><br />
+</div>
+
+</div>
+        
+                   
+            <h2>
+                Registration Open!
+            </h2>
+            <div class="col-sm-12 text-center"><img class="img-responsive" src="/img/flyer.png" width="792" height="1067" /></div>
+        
+        
+    <div class="container">
+<h3>Brought to you by our sponsors:</h3>
+<!--div class="row">
+  <h1 class="col-sm-12"><b>Gold Level</b></h1>
+	<a class="col-sm-12 col-md-6 col-lg-4" href="http://www.cedgecorp.com" target="_blank"><img src="/img/sponsors/CEdge.png" width="200"></a>
+  <a class="col-sm-12 col-md-6 col-lg-4" href="http://www.parametersecurity.com" target="_blank"><img src="/img/sponsors/parameter.jpg" width="200"></a>
+</div-->
+<div class="row">
+	<h2 class="col-sm-12 text-center"><b>Silver Level</b></h2>
+  <div class="col-sm-12 col-md-6 text-center"><a href="http://www.ogsystems.com/cyberwarfare.aspx" target="_blank"><img src="/img/sponsors/og.png" height="100px"></a></div>
+  <div class="col-sm-12 col-md-6 text-center"><a href="http://www.globalknowledge.com/training/olm/go.asp?find=CTF&country=United+States" target="_blank"><img src="/img/sponsors/gk.gif" height="100px"></a></div>
+</div>
+<div class="row">
+  <h4 class="col-sm-12 text-center"><b>Bronze Level</b></h4>
+  <h4 class="col-sm-12 col-md-6 col-lg-4 text-center">CEdge Corp</h4>
+  <h4 class="col-sm-12 col-md-6 col-lg-4 text-center">Parameter Security</h4>
+  <h4 class="col-sm-12 col-lg-4 text-center">Premier Knowledge Solutions</h4>
+</div>
+<br /><br />
+Want to help?  Questions?  Please contact <a href="mailto:contact.stlouis@milcyber.org?subject=[CTF 2015] Website Question">contact.stlouis@milcyber.org</a> or visit us on our website at <a href="http://mcpa-stl.org" target="_blank">mcpa-stl.org</a>.
+</div>
+
+     <hr />
+    <p class="rss-subscribe">subscribe <a href="feed.xml">via RSS</a></p>
+</div>
+
+        </div>
+
+        <footer id="footer">
+</footer> <!-- footer -->
+
+
+        
+
+        <script>
+            $(function () {
+                
+            })
+        </script>
+    </div>
+</body>
+</html>
