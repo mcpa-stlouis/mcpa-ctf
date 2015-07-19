@@ -121,7 +121,14 @@ $ ->
 
 
   $("#country-select").on "change", checkEligibility
-  $("#background-select").on "change", checkEligibility
+  $('#background-select').change ->
+    checkEligibility
+    if $('#background-select').val() == 'remote'
+      $('#paypal-row').hide()
+      $('#paypal').val 'MCPACTFREMOTE2015'
+    else
+      $('#paypal-row').show()
+      $('#paypal').val ''
 
   $("#country-select").html('
         <option value="">Country...</option>
