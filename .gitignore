@@ -26,3 +26,4 @@ example_problems/
 */*.pyc
 */*/*.pyc
 .python_history
+batch*
