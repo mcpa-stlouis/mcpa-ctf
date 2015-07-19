@@ -25,8 +25,4 @@ example_problems/
 */*.pyc
 */*/*.pyc
 .python_history
-<<<<<<< HEAD
-batch*
-=======
 .vimrc
->>>>>>> 4d7db8dcb06b58f7c357bf96765c846d88817c19
