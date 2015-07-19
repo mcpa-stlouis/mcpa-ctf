@@ -1,6 +1,12 @@
 server {
-        server_name ctf;
-        listen       80;
+    		listen         80;
+    		#return 301 https://$host$request_uri;
+#}
+#server {
+        listen	443 ssl;
+				server_name ctf.mcpa-stl.org;
+				ssl_certificate    /etc/ssl/ctf.mcpa-stl.org.crt;
+				ssl_certificate_key    /etc/ssl/ctf.mcpa-stl.org.key;
         root   /srv/http/ctf;
 
 	error_page 404  =  /404.html;
