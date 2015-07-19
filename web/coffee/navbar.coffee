@@ -1,6 +1,7 @@
 apiOffline =
   About: "/about"
   News: "/news"
+  Sponsorship: "/sponsorship"
 
 teacherLoggedIn =
   Problems: "/problems"
@@ -10,6 +11,7 @@ teacherLoggedIn =
   About:
     About: "/about"
     News: "/news"
+  	Sponsorship: "/sponsorship"
   Account:
     Manage: "/account"
     Logout: "#"
@@ -42,6 +44,7 @@ userLoggedInNoCompetition =
   About:  
     About: "/about"
     News: "/news"
+ 		Sponsorship: "/sponsorship"
   Account:
     Manage: "/account"
     Logout: "#"
@@ -50,6 +53,7 @@ userLoggedInNoCompetition =
 userNotLoggedIn =
   About: "/about"
   News: "/news"
+ 	Sponsorship: "/sponsorship"
   Scoreboard: "/scoreboard"
   Login: "/login"
 
